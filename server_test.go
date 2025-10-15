@@ -19,22 +19,40 @@ func assertResponseBody(t testing.TB, got, want string) {
 	}
 }
 
+type StubUserStore struct {
+	strings map[string]string
+}
+
+func (s *StubUserStore) GetUserString(name string) string {
+	userString := s.strings[name]
+	return userString
+}
+
 func TestGETRequest(t *testing.T) {
+	store := StubUserStore{
+		map[string]string{
+			"Siripala": "Siripala's Mailbox",
+			"Piyaseli": "Piyaseli's Mailbox",
+		},
+	}
+
+	server := &UserServer{&store}
+
 	t.Run("returns a value for Siripala", func(t *testing.T) {
 		request := newGetRequest("Siripala")
 		response := httptest.NewRecorder()
 
-		GetReq(response, request)
+		server.ServeHTTP(response, request)
 
-		assertResponseBody(t, response.Body.String(), "Siripala's mailbox")
+		assertResponseBody(t, response.Body.String(), "Siripala's Mailbox")
 	})
 
 	t.Run("returns a value for Piyaseli", func(t *testing.T) {
 		request := newGetRequest("Piyaseli")
 		response := httptest.NewRecorder()
 
-		GetReq(response, request)
+		server.ServeHTTP(response, request)
 
-		assertResponseBody(t, response.Body.String(), "Piyaseli's mailbox")
+		assertResponseBody(t, response.Body.String(), "Piyaseli's Mailbox")
 	})
 }

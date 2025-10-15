@@ -5,7 +5,13 @@ import (
 	"net/http"
 )
 
+type InMemoryUserStore struct{}
+
+func (i *InMemoryUserStore) GetUserString(name string) string {
+	return "123"
+}
+
 func main() {
-	handler := http.HandlerFunc(GetReq)
+	handler := &UserServer{&InMemoryUserStore{}}
 	log.Fatal(http.ListenAndServe(":8080", handler))
 }

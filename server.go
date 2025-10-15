@@ -8,21 +8,27 @@ import (
 
 const port = ":6969"
 
-func GetReq(w http.ResponseWriter, r *http.Request) {
+type UserString interface {
+	GetUserString(name string) string
+}
 
-	user := strings.TrimPrefix(r.URL.Path, "/users/")
-
-	fmt.Fprint(w, GetUserString(user))
+type UserServer struct {
+	store UserString
 }
 
 func GetUserString(name string) string {
 	if name == "Piyaseli" {
-		return "Piyaseli's mailbox"
+		return "Piyaseli's Mailbox"
 	}
 
 	if name == "Siripala" {
-		return "Siripala's mailbox"
+		return "Siripala's Mailbox"
 	}
 
 	return ""
+}
+
+func (u *UserServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.URL.Path, "/users/")
+	fmt.Fprint(w, u.store.GetUserString(user))
 }
