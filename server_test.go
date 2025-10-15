@@ -64,7 +64,7 @@ func TestGETRequest(t *testing.T) {
 	})
 
 	t.Run("returns 404 on missing users", func(t *testing.T) {
-		request := newGetRequest("Apollo")
+		request := newGetRequest("PunchiBanda")
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -75,5 +75,20 @@ func TestGETRequest(t *testing.T) {
 		if got != want {
 			t.Errorf("got status %d want %d", got, want)
 		}
+	})
+}
+
+func TestPOSTRequest(t *testing.T) {
+	store := StubUserStore{
+		map[string]string{},
+	}
+	server := &UserServer{&store}
+
+	t.Run("it returns accepted on POST", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/users/PunchiBanda", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+		assertStatus(t, response.Code, http.StatusAccepted)
 	})
 }
