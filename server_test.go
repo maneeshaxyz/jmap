@@ -9,6 +9,16 @@ import (
 
 type StubUserStore struct {
 	strings map[string]string
+	values  []string
+}
+
+func (s *StubUserStore) GetUserMailbox(name string) string {
+	score := s.strings[name]
+	return score
+}
+
+func (s *StubUserStore) ChangeUserValues(name string) {
+	s.values = append(s.values, name)
 }
 
 func (s *StubUserStore) GetUserString(name string) string {
@@ -40,7 +50,7 @@ func TestGETRequest(t *testing.T) {
 		map[string]string{
 			"Siripala": "Siripala's Mailbox",
 			"Piyaseli": "Piyaseli's Mailbox",
-		},
+		}, nil,
 	}
 
 	server := &UserServer{&store}
@@ -80,7 +90,7 @@ func TestGETRequest(t *testing.T) {
 
 func TestPOSTRequest(t *testing.T) {
 	store := StubUserStore{
-		map[string]string{},
+		map[string]string{}, nil,
 	}
 	server := &UserServer{&store}
 
@@ -90,5 +100,9 @@ func TestPOSTRequest(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 		assertStatus(t, response.Code, http.StatusAccepted)
+
+		if len(store.values) != 1 {
+			t.Errorf("got %d calls to POST want %d", len(store.values), 1)
+		}
 	})
 }

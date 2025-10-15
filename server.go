@@ -8,6 +8,7 @@ import (
 
 type UserString interface {
 	GetUserString(name string) string
+	ChangeUserValues(value string)
 }
 
 type UserServer struct {
@@ -49,5 +50,6 @@ func (u *UserServer) getString(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *UserServer) postString(w http.ResponseWriter) {
+	u.store.ChangeUserValues("Bob")
 	w.WriteHeader(http.StatusAccepted)
 }
