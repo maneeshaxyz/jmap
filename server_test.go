@@ -89,13 +89,15 @@ func TestGETRequest(t *testing.T) {
 }
 
 func TestPOSTRequest(t *testing.T) {
-	store := StubUserStore{
-		map[string]string{}, nil,
-	}
-	server := &UserServer{&store}
 
 	t.Run("it returns accepted on POST", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodPost, "/users/PunchiBanda", nil)
+
+		store := StubUserStore{
+			map[string]string{}, nil,
+		}
+		server := &UserServer{&store}
+
+		request := newPostRequest("PunchiBanda")
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -105,4 +107,34 @@ func TestPOSTRequest(t *testing.T) {
 			t.Errorf("got %d calls to POST want %d", len(store.values), 1)
 		}
 	})
+
+	t.Run("it records values on POST", func(t *testing.T) {
+
+		store := StubUserStore{
+			map[string]string{}, nil,
+		}
+		server := &UserServer{&store}
+
+		user := "PunchiBanda"
+
+		request := newPostRequest(user)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusAccepted)
+
+		if len(store.values) != 1 {
+			t.Fatalf("got %d calls to ChangeValues want %d", len(store.values), 1)
+		}
+
+		if store.values[0] != user {
+			t.Errorf("did not store correct winner got %q want %q", store.values[0], user)
+		}
+	})
+}
+
+func newPostRequest(name string) *http.Request {
+	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/users/%s", name), nil)
+	return req
 }

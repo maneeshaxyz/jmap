@@ -31,11 +31,10 @@ func (u *UserServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodPost:
-		u.postString(w)
+		u.postString(w, r)
 	case http.MethodGet:
 		u.getString(w, r)
 	}
-
 }
 
 func (u *UserServer) getString(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +48,8 @@ func (u *UserServer) getString(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, u.store.GetUserString(user))
 }
 
-func (u *UserServer) postString(w http.ResponseWriter) {
-	u.store.ChangeUserValues("Bob")
+func (u *UserServer) postString(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.URL.Path, "/users/")
+	u.store.ChangeUserValues(user)
 	w.WriteHeader(http.StatusAccepted)
 }
