@@ -6,19 +6,24 @@ fmt:
 vet:
 	go vet ./...
 
-build:
-	go build -o jmap
+test:
+	go test ./...
+
+lint: fmt vet test
+	@echo "Code passed fmt, vet, and tests ✅"
+
+build: lint
+	go build -o server
+
+linux:
+	GOOS=linux GOARCH=amd64 go build -o server
 
 run: build
-	./jmap
+	./server
 
-format:
-	go fmt
+clean:
+	rm -f server
 
-dbuild:
-	docker build -t jmap .
 
-drun:
-	docker run jmap
-
-.PHONY: fmt vet build run
+# --- Phony targets ---
+.PHONY: fmt vet test lint build run clean
