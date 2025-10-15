@@ -30,5 +30,11 @@ func GetUserString(name string) string {
 
 func (u *UserServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	user := strings.TrimPrefix(r.URL.Path, "/users/")
+
+	userString := u.store.GetUserString(user)
+
+	if userString == "" {
+		w.WriteHeader(http.StatusNotFound)
+	}
 	fmt.Fprint(w, u.store.GetUserString(user))
 }
