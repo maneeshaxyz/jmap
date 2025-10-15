@@ -6,8 +6,6 @@ import (
 	"strings"
 )
 
-const port = ":6969"
-
 type UserString interface {
 	GetUserString(name string) string
 }
