@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 )
 
 const port = ":6969"
 
-func main() {
-	fmt.Printf("Hello! %s \n", port)
+func GetReq(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Siripala's mailbox")
 }

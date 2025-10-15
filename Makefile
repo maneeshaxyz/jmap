@@ -13,7 +13,7 @@ lint: fmt vet test
 	@echo "Code passed fmt, vet, and tests ✅"
 
 build: lint
-	go build -o server
+	go build -o server main.go
 
 linux:
 	GOOS=linux GOARCH=amd64 go build -o server
