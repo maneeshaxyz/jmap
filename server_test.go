@@ -7,7 +7,7 @@ import (
 )
 
 func TestGETRequest(t *testing.T) {
-	t.Run("returns a GET req for Siripala", func(t *testing.T) {
+	t.Run("returns a value for Siripala", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/users/Siripala", nil)
 		response := httptest.NewRecorder()
 
@@ -15,6 +15,20 @@ func TestGETRequest(t *testing.T) {
 
 		got := response.Body.String()
 		want := "Siripala's mailbox"
+
+		if got != want {
+			t.Errorf("got %q, want %q", got, want)
+		}
+	})
+
+	t.Run("returns a value for Piyaseli", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/users/Piyaseli", nil)
+		response := httptest.NewRecorder()
+
+		GetReq(response, request)
+
+		got := response.Body.String()
+		want := "Piyaseli's mailbox"
 
 		if got != want {
 			t.Errorf("got %q, want %q", got, want)
