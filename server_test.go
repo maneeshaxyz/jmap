@@ -89,32 +89,12 @@ func TestGETRequest(t *testing.T) {
 }
 
 func TestPOSTRequest(t *testing.T) {
-
-	t.Run("it returns accepted on POST", func(t *testing.T) {
-
-		store := StubUserStore{
-			map[string]string{}, nil,
-		}
-		server := &UserServer{&store}
-
-		request := newPostRequest("PunchiBanda")
-		response := httptest.NewRecorder()
-
-		server.ServeHTTP(response, request)
-		assertStatus(t, response.Code, http.StatusAccepted)
-
-		if len(store.values) != 1 {
-			t.Errorf("got %d calls to POST want %d", len(store.values), 1)
-		}
-	})
+	store := StubUserStore{
+		map[string]string{}, nil,
+	}
+	server := &UserServer{&store}
 
 	t.Run("it records values on POST", func(t *testing.T) {
-
-		store := StubUserStore{
-			map[string]string{}, nil,
-		}
-		server := &UserServer{&store}
-
 		user := "PunchiBanda"
 
 		request := newPostRequest(user)
