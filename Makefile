@@ -13,17 +13,16 @@ lint: fmt vet test
 	@echo "Code passed fmt, vet, and tests ✅"
 
 build: lint
-	go build -o server main.go
+	go build .
 
 linux:
-	GOOS=linux GOARCH=amd64 go build -o server
+	GOOS=linux GOARCH=amd64 go build -o jmap
 
 run: build
-	./server
+	./jmap
 
 clean:
-	rm -f server
-
+	rm -f jmap
 
 # --- Phony targets ---
 .PHONY: fmt vet test lint build run clean
