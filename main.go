@@ -1,11 +1,9 @@
 package main
 
 import (
-	"log"
-	"net/http"
+	"fmt"
 )
 
 func main() {
-	handler := &UserServer{NewInMemoryUserStore()}
-	log.Fatal(http.ListenAndServe(":8080", handler))
+	fmt.Println("Hello")
 }

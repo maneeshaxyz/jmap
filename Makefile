@@ -10,7 +10,7 @@ test:
 	go test ./...
 
 lint: fmt vet test
-	@echo "Code passed fmt, vet, and tests ✅"
+	@echo "Code passed fmt, vet, and tests"
 
 build: lint
 	go build .
