@@ -1,9 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 )
 
@@ -23,7 +23,7 @@ func assertStatus(t testing.TB, got, want int) {
 	}
 }
 
-/// Main Tests
+// Main tests
 
 func TestJMAPServer(t *testing.T) {
 	t.Run("it sends a POST value and returns 200", func(t *testing.T) {
@@ -47,9 +47,16 @@ func TestJMAPServer(t *testing.T) {
 			t.Errorf("expected Content-Type application/json")
 		}
 
-		got := response.Body.String()
-		if !strings.Contains(got, "methodResponses") {
-			t.Errorf("response missing methodResponses")
+		var jmapResp JMAPResponse
+		err := json.Unmarshal(response.Body.Bytes(), &jmapResp)
+		if err != nil {
+			t.Fatalf("JSON unmarshal failed")
+		}
+		if jmapResp.MethodResponses == nil {
+			t.Error("error")
+		}
+		if jmapResp.SessionState == "" {
+			t.Error("sessionState should not be empty")
 		}
 	})
 }
