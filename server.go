@@ -15,7 +15,7 @@ type JMAPResponse struct {
 
 func (j *JMAPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	response := JMAPResponse{
-		MethodResponses: [][]interface{}{},
+		MethodResponses: [][]any{},
 		SessionState:    "dummy",
 	}
 	w.Header().Set("Content-Type", "application/json")
