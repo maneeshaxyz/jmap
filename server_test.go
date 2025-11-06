@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -36,7 +37,7 @@ func TestJMAPServer(t *testing.T) {
 		assertStatus(t, response.Code, http.StatusAccepted)
 	})
 
-	t.Run("response contains valid JSON", func(t *testing.T) {
+	t.Run("RESPONSE contains valid JSON", func(t *testing.T) {
 		server := &JMAPServer{}
 		request, _ := http.NewRequest(http.MethodPost, "/jmap", nil)
 		response := httptest.NewRecorder()
@@ -58,5 +59,29 @@ func TestJMAPServer(t *testing.T) {
 		if jmapResp.SessionState == "" {
 			t.Error("sessionState should not be empty")
 		}
+	})
+
+	t.Run("Read and parse incoming JSON", func(t *testing.T) {
+		server := &JMAPServer{}
+		requestBody := strings.NewReader(`{"using":[], "methodCalls":[]}`)
+		request, _ := http.NewRequest(http.MethodPost, "/jmap", requestBody)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		// If server parsed successfully, it returns 202
+		assertStatus(t, response.Code, http.StatusAccepted)
+	})
+
+	t.Run("return error for invalid JSON", func(t *testing.T) {
+		server := &JMAPServer{}
+		requestBody := strings.NewReader("{this is not valid json")
+		request, _ := http.NewRequest(http.MethodPost, "/jmap", requestBody)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		// parse and return 400
+		assertStatus(t, response.Code, http.StatusBadRequest)
 	})
 }
