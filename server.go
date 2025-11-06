@@ -9,11 +9,24 @@ type JMAPServer struct {
 }
 
 type JMAPResponse struct {
-	MethodResponses [][]interface{} `json:"methodResponses"`
-	SessionState    string          `json:"sessionState"`
+	MethodResponses [][]any `json:"methodResponses"`
+	SessionState    string  `json:"sessionState"`
+}
+
+type JMAPRequest struct {
+	Using       []string `json:"using"`
+	MethodCalls [][]any  `json:"methodCalls"`
 }
 
 func (j *JMAPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+	var req JMAPRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	response := JMAPResponse{
 		MethodResponses: [][]any{},
 		SessionState:    "dummy",

@@ -30,7 +30,7 @@ func TestJMAPServer(t *testing.T) {
 	t.Run("it sends a POST value and returns 200", func(t *testing.T) {
 		server := &JMAPServer{}
 
-		request, _ := http.NewRequest(http.MethodPost, "/jmap", nil)
+		request, _ := http.NewRequest(http.MethodPost, "/jmap", strings.NewReader("{}"))
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -39,7 +39,7 @@ func TestJMAPServer(t *testing.T) {
 
 	t.Run("RESPONSE contains valid JSON", func(t *testing.T) {
 		server := &JMAPServer{}
-		request, _ := http.NewRequest(http.MethodPost, "/jmap", nil)
+		request, _ := http.NewRequest(http.MethodPost, "/jmap", strings.NewReader("{}"))
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
