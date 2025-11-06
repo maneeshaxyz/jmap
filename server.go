@@ -20,17 +20,37 @@ type JMAPRequest struct {
 
 func (j *JMAPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	var req JMAPRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+	var request JMAPRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
+	methodResponses := make([][]any, 0)
+
+	for _, call := range request.MethodCalls {
+		// Not a valid call, skip it
+		if len(call) < 3 {
+			continue
+		}
+		// Not a string then skip it
+		methodName, ok := call[0].(string)
+		if !ok {
+			continue
+		}
+
+		if methodName == "Echo/echo" {
+			methodResponses = append(methodResponses, call)
+		}
+	}
+
 	response := JMAPResponse{
-		MethodResponses: [][]any{},
+		MethodResponses: methodResponses,
 		SessionState:    "dummy",
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(response)

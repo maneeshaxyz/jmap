@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 )
 
-// Assert helper functions
+// ASSERT HELPERS
 
 func assertResponseBody(t testing.TB, got, want string) {
 	t.Helper()
@@ -24,7 +25,7 @@ func assertStatus(t testing.TB, got, want int) {
 	}
 }
 
-// Main tests
+// SERVER FUNCTIONALITY
 
 func TestJMAPServer(t *testing.T) {
 	t.Run("returns 202 Accepted for a valid JMAP request", func(t *testing.T) {
@@ -66,5 +67,49 @@ func TestJMAPServer(t *testing.T) {
 		assertStatus(t, response.Code, http.StatusBadRequest)
 
 		// TODO: assert the response body is empty or contains a specific JSON error, per RFC 8620.
+	})
+}
+
+// CAPABILITIES
+
+func TestJMAPFunctionality(t *testing.T) {
+	t.Run("Echo/echo method call", func(t *testing.T) {
+		server := &JMAPServer{}
+
+		requestBody := strings.NewReader(`{
+            "using": [],
+            "methodCalls": [
+                ["Echo/echo", {"hello": "world"}, "c1"]
+            ]
+        }`)
+
+		request, _ := http.NewRequest(http.MethodPost, "/jmap", requestBody)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusAccepted)
+
+		var jmapResp JMAPResponse
+		err := json.Unmarshal(response.Body.Bytes(), &jmapResp)
+		if err != nil {
+			t.Fatalf("Failed to unmarshal response JSON: %v", err)
+		}
+
+		if len(jmapResp.MethodResponses) != 1 {
+			t.Fatalf("expected 1 methodResponse, got %d", len(jmapResp.MethodResponses))
+		}
+
+		wantResponse := []any{
+			"Echo/echo",
+			map[string]any{"hello": "world"},
+			"c1",
+		}
+
+		gotResponse := jmapResp.MethodResponses[0]
+
+		if !reflect.DeepEqual(gotResponse, wantResponse) {
+			t.Errorf("methodResponse is wrong:\ngot:  %#v\nwant: %#v", gotResponse, wantResponse)
+		}
 	})
 }
