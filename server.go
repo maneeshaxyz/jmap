@@ -5,9 +5,6 @@ import (
 	"net/http"
 )
 
-type JMAPServer struct {
-}
-
 type JMAPResponse struct {
 	MethodResponses [][]any `json:"methodResponses"`
 	SessionState    string  `json:"sessionState"`
@@ -16,6 +13,9 @@ type JMAPResponse struct {
 type JMAPRequest struct {
 	Using       []string `json:"using"`
 	MethodCalls [][]any  `json:"methodCalls"`
+}
+
+type JMAPServer struct {
 }
 
 func (j *JMAPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
