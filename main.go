@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"net/http"
 )
 
 func main() {
-	fmt.Println("Hello")
+	log.Println("JMAP server starting on port 8080")
+	log.Fatal(http.ListenAndServe(":8080", &JMAPServer{}))
 }

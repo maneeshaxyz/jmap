@@ -28,14 +28,14 @@ func assertStatus(t testing.TB, got, want int) {
 // SERVER FUNCTIONALITY
 
 func TestJMAPServer(t *testing.T) {
-	t.Run("returns 202 Accepted for a valid JMAP request", func(t *testing.T) {
+	t.Run("returns 200 Accepted for a valid JMAP request", func(t *testing.T) {
 		server := &JMAPServer{}
 		requestBody := strings.NewReader(`{"using":[], "methodCalls":[]}`)
 		request, _ := http.NewRequest(http.MethodPost, "/jmap", requestBody)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
-		assertStatus(t, response.Code, http.StatusAccepted)
+		assertStatus(t, response.Code, http.StatusOK)
 
 		if response.Header().Get("Content-Type") != "application/json" {
 			t.Errorf("expected Content-Type application/json, got %q", response.Header().Get("Content-Type"))
@@ -88,7 +88,7 @@ func TestJMAPFunctionality(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
-		assertStatus(t, response.Code, http.StatusAccepted)
+		assertStatus(t, response.Code, http.StatusOK)
 
 		var jmapResp JMAPResponse
 		err := json.Unmarshal(response.Body.Bytes(), &jmapResp)

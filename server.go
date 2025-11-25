@@ -5,18 +5,17 @@ import (
 	"net/http"
 )
 
-type JMAPResponse struct {
-	MethodResponses [][]any `json:"methodResponses"`
-	SessionState    string  `json:"sessionState"`
-}
-
 type JMAPRequest struct {
 	Using       []string `json:"using"`
 	MethodCalls [][]any  `json:"methodCalls"`
 }
 
-type JMAPServer struct {
+type JMAPResponse struct {
+	MethodResponses [][]any `json:"methodResponses"`
+	SessionState    string  `json:"sessionState"`
 }
+
+type JMAPServer struct{}
 
 func (j *JMAPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
@@ -52,7 +51,7 @@ func (j *JMAPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusAccepted)
+	w.WriteHeader(http.StatusOK)
 
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
