@@ -11,12 +11,12 @@ import (
 
 // ASSERT HELPERS
 
-func assertResponseBody(t testing.TB, got, want string) {
-	t.Helper()
-	if got != want {
-		t.Errorf("response body is wrong, got %q want %q", got, want)
-	}
-}
+// func assertResponseBody(t testing.TB, got, want string) {
+// 	t.Helper()
+// 	if got != want {
+// 		t.Errorf("response body is wrong, got %q want %q", got, want)
+// 	}
+// }
 
 func assertStatus(t testing.TB, got, want int) {
 	t.Helper()
