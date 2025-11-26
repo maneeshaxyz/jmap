@@ -1,5 +1,5 @@
 # Use the official Go image to create a build artifact.
-FROM golang:1.25.0-bookworm as builder
+FROM golang:1.25.0-bookworm AS builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy go mod files
 COPY go.mod  ./
 
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+# Download all dependencies. Dependencies will be cached if the go.mod file is not changed
 RUN go mod download
 
 COPY . .
