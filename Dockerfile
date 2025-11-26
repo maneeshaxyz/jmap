@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy go mod files
 COPY go.mod  ./
 
-# Download all dependencies. Dependencies will be cached if the go.mod file is not changed
-RUN go mod download
-
 COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /jmap .
