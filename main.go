@@ -29,8 +29,8 @@ func getHandler(w http.ResponseWriter, r *http.Request) {
 }
 func postHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
-		w.WriteHeader(405)
-		w.Write([]byte("Method Not Allowed"))
+		w.Header().Add("Allow", "POST")
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
 	}
 	w.Write([]byte("This is my POST handler"))
