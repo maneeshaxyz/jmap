@@ -30,7 +30,6 @@ func (j *JMAPServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	methodResponses := make([][]any, 0)
 
 	for _, call := range request.MethodCalls {
-		// Not a valid call, skip it
 		if len(call) < 3 {
 			continue
 		}
