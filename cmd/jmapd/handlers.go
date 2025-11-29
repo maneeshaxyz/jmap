@@ -4,7 +4,7 @@ import "net/http"
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		app.notFound(w)
 		return
 	}
 	w.Write([]byte("Hello from your JMAP server"))
@@ -17,7 +17,7 @@ func (app *application) getHandler(w http.ResponseWriter, r *http.Request) {
 func (app *application) postHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.Header().Add("Allow", "POST")
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
 	w.Write([]byte("This is my POST handler"))
