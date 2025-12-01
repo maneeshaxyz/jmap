@@ -12,6 +12,11 @@ type application struct {
 	infoLog  *log.Logger
 }
 
+// main.go handles:
+// - parsing the runtime configuration settings for the JMAP server,
+// - init of loggers to be injected to handlers.go
+// - Running the HTTP server
+
 func main() {
 
 	port := flag.String("port", ":8080", "HTTP port")
@@ -25,17 +30,12 @@ func main() {
 		infoLog:  infoLog,
 	}
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/get/resource", app.getHandler)
-	mux.HandleFunc("/post/resource", app.postHandler)
-
 	infoLog.Printf("Starting server on %s", *port)
 
 	srv := &http.Server{
 		Addr:     *port,
 		ErrorLog: errorLog,
-		Handler:  mux,
+		Handler:  app.routes(),
 	}
 
 	err := srv.ListenAndServe()
