@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
@@ -21,4 +24,9 @@ func (app *application) postHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write([]byte("This is my POST handler"))
+}
+
+func (app *application) healthCheck(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "status: available")
+	fmt.Fprintf(w, "port: %d\n", app.config.port)
 }
