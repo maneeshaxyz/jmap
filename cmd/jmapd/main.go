@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 type config struct {
@@ -38,9 +39,12 @@ func main() {
 	}
 
 	srv := &http.Server{
-		Addr:     fmt.Sprintf(":%d", cfg.port),
-		ErrorLog: errorLog,
-		Handler:  app.routes(),
+		Addr:         fmt.Sprintf(":%d", cfg.port),
+		ErrorLog:     errorLog,
+		Handler:      app.routes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
 	}
 
 	infoLog.Printf("Starting server on %s", srv.Addr)
