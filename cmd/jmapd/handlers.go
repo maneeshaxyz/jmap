@@ -40,7 +40,7 @@ func (app *application) healthCheck(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	if _, err := fmt.Fprintf(w, "port: %d\n", app.config.port); err != nil {
+	if _, err := fmt.Fprintf(w, "port: %d\n", app.port); err != nil {
 		app.serverError(w, err)
 		return
 	}
