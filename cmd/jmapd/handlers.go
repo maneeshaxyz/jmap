@@ -10,11 +10,15 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-	w.Write([]byte("Hello from your JMAP server"))
+	if _, err := w.Write([]byte("Hello from your JMAP server")); err != nil {
+		app.serverError(w, err)
+	}
 }
 
 func (app *application) getHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("This is my GET handler"))
+	if _, err := w.Write([]byte("This is my GET handler")); err != nil {
+		app.serverError(w, err)
+	}
 }
 
 func (app *application) postHandler(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +27,9 @@ func (app *application) postHandler(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-	w.Write([]byte("This is my POST handler"))
+	if _, err := w.Write([]byte("This is my POST handler")); err != nil {
+		app.serverError(w, err)
+	}
 }
 
 func (app *application) healthCheck(w http.ResponseWriter, r *http.Request) {
