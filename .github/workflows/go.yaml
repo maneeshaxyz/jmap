@@ -1,4 +1,4 @@
-name: Go build and golangci-yaml pipeline
+name: CI Pipeline
 
 on:
   push:
