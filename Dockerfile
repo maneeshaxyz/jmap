@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /jmap .
+RUN CGO_ENABLED=0 go build -o /jmap ./cmd/jmapd
 
 FROM scratch
 
