@@ -10,7 +10,9 @@ import (
 )
 
 type config struct {
-	port int
+	port     int
+	certfile string
+	keyfile  string
 }
 
 type application struct {
@@ -26,11 +28,18 @@ type application struct {
 
 func main() {
 	var cfg config
+
 	flag.IntVar(&cfg.port, "port", 8080, "HTTP port")
+	flag.StringVar(&cfg.certfile, "certfile", "server.crt", "Cert File")
+	flag.StringVar(&cfg.keyfile, "keyfile", "server.key", "Key File")
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	if cfg.certfile == "" || cfg.keyfile == "" {
+		errorLog.Fatal("TLS enabled: certfile and keyfile must be provided")
+	}
 
 	app := &application{
 		config:   cfg,
@@ -49,6 +58,6 @@ func main() {
 
 	infoLog.Printf("Starting server on %s", srv.Addr)
 
-	err := srv.ListenAndServe()
+	err := srv.ListenAndServeTLS(cfg.certfile, cfg.keyfile)
 	errorLog.Fatal(err)
 }

@@ -13,13 +13,13 @@ lint: fmt vet test
 	@echo "Code passed fmt, vet, and tests"
 
 build: lint
-	go build .
+	go build ./cmd/jmapd/
 
 linux:
 	GOOS=linux GOARCH=amd64 go build -o jmap
 
 run: build
-	./jmap
+	./jmapd
 
 clean:
 	rm -f jmap
