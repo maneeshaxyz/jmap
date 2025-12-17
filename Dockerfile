@@ -11,6 +11,8 @@ RUN CGO_ENABLED=0 go build -o /jmap ./cmd/jmapd
 FROM scratch
 
 COPY --from=builder /jmap /jmap
+COPY --from=builder /app/server.crt /server.crt
+COPY --from=builder /app/server.key /server.key
 
 EXPOSE 8080
 
