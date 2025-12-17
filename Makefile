@@ -13,7 +13,7 @@ lint: fmt vet test
 	@echo "Code passed fmt, vet, and tests"
 
 build: lint
-	go build ./cmd/jmapd/
+	GOEXPERIMENT=jsonv2 go build ./cmd/jmapd/
 
 linux:
 	GOOS=linux GOARCH=amd64 go build -o jmap
