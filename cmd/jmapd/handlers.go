@@ -47,14 +47,6 @@ func (app *application) healthCheck(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) wellKnownHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode("/jmap/session"); err != nil {
-		app.serverError(w, err)
-		return
-	}
-}
-
 func (app *application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 	session := Session{
 		Capabilities: Capabilities{
