@@ -28,3 +28,14 @@ const (
 	UploadURLTmpl      = APIBaseURL + "upload/{accountId}"
 	EventSourceURLTmpl = APIBaseURL + "events?types={types}&closeafter={closeafter}&ping={ping}"
 )
+
+var DefaultAccounts = Accounts{
+	"account1": {
+		Name:       "user@example.com",
+		IsPersonal: true,
+		IsReadOnly: false,
+		AccountCapabilities: map[string]interface{}{
+			"urn:ietf:params:jmap:core": struct{}{}, // empty object
+		},
+	},
+}

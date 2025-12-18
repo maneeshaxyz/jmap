@@ -78,7 +78,7 @@ func (app *application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 		UploadURL:      UploadURLTmpl,
 		EventSourceURL: EventSourceURLTmpl,
 		State:          DefaultState,
-		Accounts:       make(Accounts), // Fill with actual accounts
+		Accounts:       DefaultAccounts, // Fill with actual accounts
 	}
 
 	// send JSON response

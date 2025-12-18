@@ -2,7 +2,7 @@ package main
 
 type Session struct {
 	Capabilities    Capabilities      `json:"capabilities"`
-	Accounts        Accounts          `json:"acounts"`
+	Accounts        Accounts          `json:"accounts"`
 	PrimaryAccounts map[string]string `json:"primaryAccounts,omitempty"`
 	Username        string            `json:"username"`
 	APIURL          string            `json:"apiUrl"`
