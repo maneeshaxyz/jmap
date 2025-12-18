@@ -7,3 +7,16 @@ JMAP (JSON Meta Application Protocol) is a modern, efficient protocol for synchr
 
 - cmd/jmapd:  contains all code required for a jmap server.
 - internal:   contains reusable code that isn't jmap specific.
+
+
+# Dev Setup
+
+- Clone the repository using 
+```
+git clone github.com/maneeshaxyz/jmap
+```
+
+- generate a .cert and .key for testing using 
+``` 
+openssl req -x509 -newkey rsa:4096 -nodes -keyout server.key -out server.crt -days 365 -subj "/CN=localhost"
+```
