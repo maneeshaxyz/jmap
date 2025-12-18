@@ -59,28 +59,29 @@ func (app *application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 	session := Session{
 		Capabilities: Capabilities{
 			"urn:ietf:params:jmap:core": CoreCapability{
-				MaxSizeUpload:         50000000,
-				MaxConcurrentUpload:   4,
-				MaxSizeRequest:        10000000,
-				MaxConcurrentRequests: 4,
-				MaxCallsInRequest:     16,
-				MaxObjectsInGet:       500,
-				MaxObjectsInSet:       500,
-				CollationAlgorithms:   []string{"i;ascii-numeric"},
+				MaxSizeUpload:         MaxSizeUpload,
+				MaxConcurrentUpload:   MaxConcurrentUpload,
+				MaxSizeRequest:        MaxSizeRequest,
+				MaxConcurrentRequests: MaxConcurrentRequests,
+				MaxCallsInRequest:     MaxCallsInRequest,
+				MaxObjectsInGet:       MaxObjectsInGet,
+				MaxObjectsInSet:       MaxObjectsInSet,
+				CollationAlgorithms:   CollationAlgorithms,
 			},
 		},
 		PrimaryAccounts: map[string]string{
-			"urn:ietf:params:jmap:mail": "account1",
+			"urn:ietf:params:jmap:mail": DefaultPrimaryAccount,
 		},
-		Username:       "user@example.com",
-		APIURL:         "https://api.example.com/jmap/",
-		DownloadURL:    "https://api.example.com/jmap/download/{accountId}/{blobId}/{type}/{name}",
-		UploadURL:      "https://api.example.com/jmap/upload/{accountId}",
-		EventSourceURL: "https://api.example.com/jmap/events?types={types}&closeafter={closeafter}&ping={ping}",
-		State:          "some_state_string",
+		Username:       DefaultUsername,
+		APIURL:         APIBaseURL,
+		DownloadURL:    DownloadURLTmpl,
+		UploadURL:      UploadURLTmpl,
+		EventSourceURL: EventSourceURLTmpl,
+		State:          DefaultState,
 		Accounts:       make(Accounts), // Fill with actual accounts
 	}
 
+	// send JSON response
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(session); err != nil {
 		app.serverError(w, err)

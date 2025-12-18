@@ -24,12 +24,12 @@ type application struct {
 // main.go handles:
 // - parsing the runtime configuration settings for the JMAP server,
 // - init of loggers to be injected to handlers.go
-// - Running the HTTP server
+// - Running the HTTPS server
 
 func main() {
 	var cfg config
 
-	flag.IntVar(&cfg.port, "port", 8080, "HTTP port")
+	flag.IntVar(&cfg.port, "port", 8443, "HTTP port")
 	flag.StringVar(&cfg.certfile, "certfile", "server.crt", "Cert File")
 	flag.StringVar(&cfg.keyfile, "keyfile", "server.key", "Key File")
 	flag.Parse()
