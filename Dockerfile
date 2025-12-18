@@ -14,6 +14,6 @@ COPY --from=builder /jmap /jmap
 COPY --from=builder /app/server.crt /server.crt
 COPY --from=builder /app/server.key /server.key
 
-EXPOSE 8080
+EXPOSE 8443
 
 ENTRYPOINT ["/jmap"]
