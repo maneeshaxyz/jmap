@@ -1,6 +1,8 @@
-package main
+package jmap
 
-// CoreCapability limits
+// Contains all the constants required for JMAP business logic.
+// Currently all the constants satisfy the minimum reccommendations in the RFC
+
 const (
 	MaxSizeUpload         = 50_000_000
 	MaxConcurrentUpload   = 4
@@ -11,17 +13,14 @@ const (
 	MaxObjectsInSet       = 500
 )
 
-// Collation algorithms
 var CollationAlgorithms = []string{"i;ascii-numeric"}
 
-// User and account info
 const (
 	DefaultUsername       = "user@example.com"
 	DefaultPrimaryAccount = "account1"
 	DefaultState          = "some_state_string"
 )
 
-// URLs
 const (
 	APIBaseURL         = "https://api.example.com/jmap/"
 	DownloadURLTmpl    = APIBaseURL + "download/{accountId}/{blobId}/{type}/{name}"
@@ -34,7 +33,7 @@ var DefaultAccounts = Accounts{
 		Name:       "user@example.com",
 		IsPersonal: true,
 		IsReadOnly: false,
-		AccountCapabilities: map[string]interface{}{
+		AccountCapabilities: map[string]any{
 			"urn:ietf:params:jmap:core": struct{}{}, // empty object
 		},
 	},
