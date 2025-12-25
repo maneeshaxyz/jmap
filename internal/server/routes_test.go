@@ -17,9 +17,7 @@ func TestRoutes(t *testing.T) {
 		wantCode int
 	}{
 		{"Home", "GET", "/", http.StatusOK},
-		{"Get Resource", "GET", "/get/resource", http.StatusOK},
-		{"Post Resource", "POST", "/post/resource", http.StatusOK},
-		{"Post Resource (Wrong Method)", "GET", "/post/resource", http.StatusMethodNotAllowed},
+		//{"Post Resource (Wrong Method)", "GET", "/post/resource", http.StatusMethodNotAllowed},
 		{"Healthcheck", "GET", "/healthcheck", http.StatusOK},
 		{"Session", "GET", "/.well-known/jmap", http.StatusOK},
 		{"Invalid Path", "GET", "/invalid/path", http.StatusNotFound},

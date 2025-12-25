@@ -42,6 +42,8 @@ func Run() {
 		InfoLog:  infoLog,
 	}
 
+	// addr expects a string in ":8080" format
+	// TODO: need to refine timeouts
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),
 		ErrorLog:     errorLog,

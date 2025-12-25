@@ -1,6 +1,6 @@
 package jmap
 
-// Builds a Session struct constructed with values in constants,go
+// Builds a Session struct constructed with values in constants.go
 func BuildSession() *Session {
 	session := &Session{
 		Capabilities: Capabilities{

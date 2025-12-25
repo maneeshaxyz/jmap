@@ -7,14 +7,18 @@ vet:
 	go vet ./...
 
 test:
-	go test ./...
+	go test ./... -cover
 
 lint: fmt vet test
 	@echo "Code passed fmt, vet, and tests"
 
+gci:
+	golangci-lint run
+
+#GOEXPERIMENT=jsonv2
 build: lint
 	go build ./cmd/jmapd/
-#GOEXPERIMENT=jsonv2
+
 
 dbuild:
 	docker build -t jmap .
@@ -36,4 +40,4 @@ clean:
 	rm -f jmap
 
 # --- Phony targets ---
-.PHONY: fmt vet test lint build run clean
+.PHONY: fmt vet test lint build run clean gci
