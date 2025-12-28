@@ -8,6 +8,7 @@ func (a *Application) routes() *http.ServeMux {
 	mux.HandleFunc("/", a.home)
 	mux.HandleFunc("/healthcheck", a.healthCheck)
 	mux.HandleFunc("/.well-known/jmap", a.sessionHandler)
+	mux.HandleFunc("/jmap/request", a.requestHandler)
 
 	return mux
 }

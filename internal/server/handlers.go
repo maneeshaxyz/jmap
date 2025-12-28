@@ -58,3 +58,27 @@ func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		w.Header().Add("Allow", "POST")
+		app.clientError(w, http.StatusMethodNotAllowed)
+		return
+	}
+
+	var jmapReq jmap.JmapRequest
+	err := json.NewDecoder(r.Body).Decode(&jmapReq)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+
+	err = json.NewEncoder(w).Encode(&jmapReq)
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+}
