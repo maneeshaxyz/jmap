@@ -7,7 +7,7 @@ import (
 
 func TestRoutes(t *testing.T) {
 	app := newTestApplication(t)
-	ts := newTestServer(t, app.routes())
+	ts := newTestServer(app.routes())
 	defer ts.Close()
 
 	tests := []struct {
@@ -20,6 +20,7 @@ func TestRoutes(t *testing.T) {
 		//{"Post Resource (Wrong Method)", "GET", "/post/resource", http.StatusMethodNotAllowed},
 		{"Healthcheck", "GET", "/healthcheck", http.StatusOK},
 		{"Session", "GET", "/.well-known/jmap", http.StatusOK},
+		{"Session", "POST", "/jmap/request", http.StatusOK},
 		{"Invalid Path", "GET", "/invalid/path", http.StatusNotFound},
 	}
 

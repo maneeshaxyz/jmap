@@ -8,7 +8,6 @@ import (
 	"testing"
 )
 
-// newTestApplication creates a new application struct for testing.
 func newTestApplication(t *testing.T) *Application {
 	return &Application{
 		ErrorLog: log.New(io.Discard, "", 0),
@@ -16,12 +15,11 @@ func newTestApplication(t *testing.T) *Application {
 	}
 }
 
-// testServer is a helper that creates a new test server.
 type testServer struct {
 	*httptest.Server
 }
 
-func newTestServer(t *testing.T, h http.Handler) *testServer {
+func newTestServer(h http.Handler) *testServer {
 	ts := httptest.NewServer(h)
 	return &testServer{ts}
 }

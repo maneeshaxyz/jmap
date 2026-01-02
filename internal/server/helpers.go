@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"runtime/debug"
+	"strings"
 )
 
 func (app *Application) serverError(w http.ResponseWriter, err error) {
@@ -25,4 +26,12 @@ func (app *Application) writeResponse(w http.ResponseWriter, msg string) {
 	if _, err := io.WriteString(w, msg); err != nil {
 		app.serverError(w, err)
 	}
+}
+
+func (app *Application) isReqNotJson(r *http.Request, w http.ResponseWriter) bool {
+	if r.Header.Get("Content-Type") != "application/json" && !strings.HasPrefix(r.Header.Get("Content-Type"), "application/json;") {
+		http.Error(w, "Content-Type must be application/json", http.StatusUnsupportedMediaType)
+		return true
+	}
+	return false
 }

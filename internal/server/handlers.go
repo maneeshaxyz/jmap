@@ -50,7 +50,7 @@ func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
-	session := jmap.BuildSession()
+	session := jmap.NewSession()
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(session); err != nil {
@@ -66,12 +66,18 @@ func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if isReqNotJson := app.isReqNotJson(r, w); isReqNotJson {
+		return
+	}
+
 	var jmapReq jmap.JmapRequest
 	err := json.NewDecoder(r.Body).Decode(&jmapReq)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
+
+	// LOGIC based on methods
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

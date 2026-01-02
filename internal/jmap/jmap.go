@@ -1,7 +1,7 @@
 package jmap
 
 // Builds a Session struct constructed with values in constants.go
-func BuildSession() *Session {
+func NewSession() *Session {
 	session := &Session{
 		Capabilities: Capabilities{
 			"urn:ietf:params:jmap:core": CoreCapability{
