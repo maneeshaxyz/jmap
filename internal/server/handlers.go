@@ -50,6 +50,11 @@ func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Add("Allow", http.MethodPost)
+		app.clientError(w, http.StatusMethodNotAllowed)
+		return
+	}
 	session := jmap.NewSession()
 
 	w.Header().Set("Content-Type", "application/json")
@@ -60,8 +65,8 @@ func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		w.Header().Add("Allow", "POST")
+	if r.Method != http.MethodPost {
+		w.Header().Add("Allow", http.MethodPost)
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
@@ -80,7 +85,7 @@ func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
 	// LOGIC based on methods
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 
 	err = json.NewEncoder(w).Encode(&jmapReq)
 	if err != nil {

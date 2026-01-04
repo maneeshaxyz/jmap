@@ -16,35 +16,17 @@ func TestRoutes(t *testing.T) {
 		url      string
 		wantCode int
 	}{
-		{"Home", "GET", "/", http.StatusOK},
-		//{"Post Resource (Wrong Method)", "GET", "/post/resource", http.StatusMethodNotAllowed},
-		{"Healthcheck", "GET", "/healthcheck", http.StatusOK},
-		{"Session", "GET", "/.well-known/jmap", http.StatusOK},
-		{"Session", "POST", "/jmap/request", http.StatusOK},
-		{"Invalid Path", "GET", "/invalid/path", http.StatusNotFound},
-	}
+		//{"Post Resource (Wrong Method)", http.MethodGet, "/post/resource", http.StatusMethodNotAllowed},
+		{"Home", http.MethodGet, "/", http.StatusOK},
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			var code int
+		{"Healthcheck", http.MethodGet, "/healthcheck", http.StatusOK},
 
-			switch tt.method {
-			case "GET":
-				code, _, _ = ts.get(t, tt.url)
-			case "POST":
-				res, err := ts.Client().Post(ts.URL+tt.url, "application/json", nil)
-				if err != nil {
-					t.Fatal(err)
-				}
-				code = res.StatusCode
-				res.Body.Close()
-			default:
-				t.Fatalf("method %s not supported in test", tt.method)
-			}
+		{"Valid Session Request", http.MethodGet, "/.well-known/jmap", http.StatusOK},
+		{"Invalid Session Request", http.MethodPost, "/.well-known/jmap", http.StatusMethodNotAllowed},
 
-			if code != tt.wantCode {
-				t.Errorf("want %d; got %d", tt.wantCode, code)
-			}
-		})
+		{"Valid Jmap Request", http.MethodPost, "/jmap/request", http.StatusOK},
+		{"Invalid Jmap Request", http.MethodGet, "/jmap/request", http.StatusMethodNotAllowed},
+
+		{"Invalid Path", http.MethodGet, "/invalid/path", http.StatusNotFound},
 	}
 }
