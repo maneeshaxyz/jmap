@@ -1,4 +1,4 @@
-package main
+package jmap
 
 type Session struct {
 	Capabilities    Capabilities      `json:"capabilities"`
