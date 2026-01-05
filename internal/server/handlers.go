@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/maneeshaxyz/jmap/internal/jmap"
+	jmap "github.com/maneeshaxyz/jmap/internal/core"
 )
 
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
