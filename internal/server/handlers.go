@@ -1,3 +1,8 @@
+// All handlers should:
+// Accept a HTTP request, parse and validate it.
+// Call some ServiceThing to do ImportantBusinessLogic with the data we get from step 1.
+// Send an appropriate HTTP response depending on what ServiceThing returns.
+
 package server
 
 import (
