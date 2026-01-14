@@ -18,30 +18,12 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-	if _, err := w.Write([]byte("Hello from your JMAP server")); err != nil {
+
+	if _, err := w.Write([]byte("Hello from your JMAP server \n")); err != nil {
 		app.serverError(w, err)
 		return
 	}
 }
-
-// func (app *Application) getHandler(w http.ResponseWriter, r *http.Request) {
-// 	if _, err := w.Write([]byte("This is my GET handler")); err != nil {
-// 		app.serverError(w, err)
-// 		return
-// 	}
-// }
-
-// func (app *Application) postHandler(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != "POST" {
-// 		w.Header().Add("Allow", "POST")
-// 		app.clientError(w, http.StatusMethodNotAllowed)
-// 		return
-// 	}
-// 	if _, err := w.Write([]byte("This is my POST handler")); err != nil {
-// 		app.serverError(w, err)
-// 		return
-// 	}
-// }
 
 func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
 	if _, err := fmt.Fprintln(w, "status: available"); err != nil {
@@ -55,11 +37,6 @@ func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		w.Header().Add("Allow", http.MethodPost)
-		app.clientError(w, http.StatusMethodNotAllowed)
-		return
-	}
 	session := jmap.NewSession()
 
 	w.Header().Set("Content-Type", "application/json")
@@ -70,11 +47,6 @@ func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.Header().Add("Allow", http.MethodPost)
-		app.clientError(w, http.StatusMethodNotAllowed)
-		return
-	}
 
 	if isReqNotJson := app.isReqNotJson(r, w); isReqNotJson {
 		return
