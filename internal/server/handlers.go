@@ -1,7 +1,7 @@
 // All handlers should:
-// Accept a HTTP request, parse and validate it.
-// Call some ServiceThing to do ImportantBusinessLogic with the data we get from step 1.
-// Send an appropriate HTTP response depending on what ServiceThing returns.
+// 1 - Accept a HTTP request, parse and validate it.
+// 2 - Call some ServiceThing to do ImportantBusinessLogic with the data we get from step 1.
+// 3 - Send an appropriate HTTP response depending on what ServiceThing returns.
 
 package server
 
@@ -19,18 +19,17 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := w.Write([]byte("Hello from your JMAP server \n")); err != nil {
+	_, err := w.Write([]byte("Hello from your JMAP server \n"))
+
+	if err != nil {
 		app.serverError(w, err)
-		return
 	}
 }
 
 func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
-	if _, err := fmt.Fprintln(w, "status: available"); err != nil {
-		app.serverError(w, err)
-		return
-	}
-	if _, err := fmt.Fprintf(w, "port: %d\n", app.Port); err != nil {
+	_, err := fmt.Fprintf(w, "status: available, port: %d\n", app.Port)
+
+	if err != nil {
 		app.serverError(w, err)
 		return
 	}
@@ -47,7 +46,6 @@ func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
-
 	if isReqNotJson := app.isReqNotJson(r, w); isReqNotJson {
 		return
 	}
