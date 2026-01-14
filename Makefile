@@ -9,6 +9,13 @@ vet:
 test:
 	go test ./... -cover
 
+testcov:
+	go test ./... -coverprofile=coverage.out
+	go tool cover -func=coverage.out
+
+covhtml: testcov
+	go tool cover -html=coverage.out
+
 lint: fmt vet test
 	@echo "Code passed fmt, vet, and tests"
 
