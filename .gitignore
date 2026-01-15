@@ -2,3 +2,5 @@ server.crt
 server.key
 TODO.md
 /jmapd
+.idea
+coverage.out
