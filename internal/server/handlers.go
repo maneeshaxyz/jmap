@@ -29,10 +29,10 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
 	_, err := fmt.Fprintf(w, "status: available, port: %d\n", app.Port)
 
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+	// if err != nil {
+	// 	app.serverError(w, err)
+	// 	return
+	// }
 }
 
 func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
