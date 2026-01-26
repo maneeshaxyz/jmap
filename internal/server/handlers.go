@@ -27,7 +27,7 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "status: available, port: %d\n", app.Port)
+	_, err := fmt.Fprintf(w, "status: available, port: %d\n", app.config.port)
 
 	if err != nil {
 		app.serverError(w, err)
@@ -46,7 +46,7 @@ func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
-	if isReqNotJson := app.isReqNotJson(r, w); isReqNotJson {
+	if isReqNotJson := app.requireJSON(r, w); isReqNotJson {
 		return
 	}
 

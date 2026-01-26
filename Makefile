@@ -38,7 +38,7 @@ linux:
 	GOOS=linux GOARCH=amd64 go build -o jmap
 
 run: build
-	./jmapd
+	./bin/jmapd
 
 clean:
 	rm -f jmap
