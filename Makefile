@@ -11,9 +11,6 @@ test:
 
 testcov:
 	go test ./... -coverprofile=coverage.out
-	go tool cover -func=coverage.out
-
-covhtml: testcov
 	go tool cover -html=coverage.out
 
 lint: fmt vet test
@@ -24,7 +21,7 @@ gci:
 
 #GOEXPERIMENT=jsonv2
 build: lint
-	go build ./cmd/jmapd/
+	go build -o ./bin/ ./cmd/jmapd/
 
 
 dbuild:

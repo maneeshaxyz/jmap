@@ -1,6 +1,6 @@
 server.crt
 server.key
 TODO.md
-/jmapd
+bin/jmapd
 .idea
 coverage.out
