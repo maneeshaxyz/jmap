@@ -8,7 +8,7 @@ import (
 )
 
 func TestHandlers(t *testing.T) {
-	app := &Application{}
+	app := &application{}
 	mux := app.routes()
 
 	tests := []struct {
@@ -19,12 +19,6 @@ func TestHandlers(t *testing.T) {
 		contentType    string
 		expectedStatus int
 	}{
-		{
-			name:           "GET home",
-			method:         "GET",
-			path:           "/",
-			expectedStatus: http.StatusOK,
-		},
 		{
 			name:           "GET healthcheck",
 			method:         "GET",
@@ -58,12 +52,6 @@ func TestHandlers(t *testing.T) {
 			method:         "POST",
 			path:           "/jmap/request",
 			expectedStatus: http.StatusUnsupportedMediaType,
-		},
-		{
-			name:           "Method not allowed - POST to home",
-			method:         "POST",
-			path:           "/",
-			expectedStatus: http.StatusMethodNotAllowed,
 		},
 		{
 			name:           "Not found",

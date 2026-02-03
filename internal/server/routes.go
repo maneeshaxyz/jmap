@@ -2,10 +2,9 @@ package server
 
 import "net/http"
 
-func (a *Application) routes() *http.ServeMux {
+func (a *application) routes() *http.ServeMux {
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /", a.home)
 	mux.HandleFunc("GET /healthcheck", a.healthCheck)
 	mux.HandleFunc("GET /.well-known/jmap", a.sessionHandler)
 	mux.HandleFunc("POST /jmap/request", a.requestHandler)

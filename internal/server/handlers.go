@@ -7,35 +7,26 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	jmap "github.com/maneeshaxyz/jmap/internal/core"
 )
 
-func (app *Application) home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		app.notFound(w)
-		return
+func (app *application) healthCheck(w http.ResponseWriter, r *http.Request) {
+	data := map[string]string{
+		"status":  "available",
+		"port":    strconv.Itoa(app.config.port),
+		"version": app.config.version,
 	}
-
-	_, err := w.Write([]byte("Hello from your JMAP server \n"))
-
+	err := app.writeJSON(w, http.StatusOK, data, nil)
 	if err != nil {
-		app.serverError(w, err)
+		app.logger.Error(err.Error())
+		http.Error(w, "The server encountered a problem and could not process your request", http.StatusInternalServerError)
 	}
 }
 
-func (app *Application) healthCheck(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "status: available, port: %d\n", app.config.port)
-
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-}
-
-func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 	session := jmap.NewSession()
 
 	w.Header().Set("Content-Type", "application/json")
@@ -45,7 +36,7 @@ func (app *Application) sessionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *Application) requestHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) requestHandler(w http.ResponseWriter, r *http.Request) {
 	if isReqNotJson := app.requireJSON(r, w); isReqNotJson {
 		return
 	}

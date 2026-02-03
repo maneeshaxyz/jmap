@@ -13,9 +13,10 @@ type config struct {
 	port     int
 	certfile string
 	keyfile  string
+	version  string
 }
 
-type Application struct {
+type application struct {
 	config config
 	logger *slog.Logger
 }
@@ -26,6 +27,7 @@ func Run() {
 	flag.IntVar(&cfg.port, "port", 8443, "HTTP port")
 	flag.StringVar(&cfg.certfile, "certfile", "server.crt", "Cert File")
 	flag.StringVar(&cfg.keyfile, "keyfile", "server.key", "Key File")
+	flag.StringVar(&cfg.version, "version", "v0.1.0", "Version")
 	flag.Parse()
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
@@ -34,7 +36,7 @@ func Run() {
 		logger.Error("TLS enabled: certfile and keyfile must be provided")
 	}
 
-	app := &Application{
+	app := &application{
 		config: cfg,
 		logger: logger,
 	}
@@ -50,7 +52,7 @@ func Run() {
 		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
 	}
 
-	logger.Info("Starting server on", "addr", srv.Addr)
+	logger.Info("Starting server on", "addr", srv.Addr, "version", cfg.version)
 
 	err := srv.ListenAndServeTLS(cfg.certfile, cfg.keyfile)
 	logger.Error(err.Error())
