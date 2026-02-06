@@ -15,15 +15,28 @@ git clone github.com/maneeshaxyz/jmap
 openssl req -x509 -newkey rsa:4096 -nodes -keyout server.key -out server.crt -days 365 -subj "/CN=localhost"
 ```
 
-### Build (source or dockerfile)
-- build from source:
+### Build & run (source or dockerfile)
+- from source:
 
 ```
-make
+make #make build for build only
 ```
 
 - as dockerfile
 
 ```
-make drun
+make drun # make dbuild for docker build only
+```
+
+## Project Structure
+
+```
+jmap/
+├── cmd/jmapd/          # Main server entry point
+├── internal/
+│   ├── core/           # JMAP domain types
+│   ├── parser/         # Request parsing and validation
+│   └── server/         # HTTP server implementation
+├── docs/               # All documentation
+└── bin/                # Built binaries
 ```

@@ -7,7 +7,7 @@ vet:
 	go vet ./...
 
 test:
-	go test ./... -cover
+	go test ./... -cover -race
 
 testcov:
 	go test ./... -coverprofile=coverage.out
@@ -41,7 +41,7 @@ run: build
 	./bin/jmapd
 
 clean:
-	rm -f jmap
+	rm -f ./bin/jmapd
 
 # --- Phony targets ---
 .PHONY: fmt vet test lint build run clean gci

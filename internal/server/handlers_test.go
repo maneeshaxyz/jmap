@@ -33,7 +33,7 @@ func TestHandlers(t *testing.T) {
 			expectedStatus: http.StatusOK,
 		},
 		{
-			name:           "POST JMAP request",
+			name:           "POST correct JMAP request",
 			method:         "POST",
 			path:           "/jmap/request",
 			body:           `{"using":["urn:ietf:params:jmap:core"],"methodCalls":[]}`,
@@ -41,20 +41,20 @@ func TestHandlers(t *testing.T) {
 			expectedStatus: http.StatusOK,
 		},
 		{
-			name:           "POST JMAP request",
+			name:           "POST JMAP request with no body",
 			method:         "POST",
 			path:           "/jmap/request",
 			contentType:    "application/json",
 			expectedStatus: http.StatusBadRequest,
 		},
 		{
-			name:           "POST JMAP request",
+			name:           "POST JMAP request with no content and no body",
 			method:         "POST",
 			path:           "/jmap/request",
 			expectedStatus: http.StatusUnsupportedMediaType,
 		},
 		{
-			name:           "Not found",
+			name:           "Nonexistent path",
 			method:         "GET",
 			path:           "/nonexistent",
 			expectedStatus: http.StatusNotFound,
