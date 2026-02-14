@@ -1,7 +1,6 @@
 package server
 
 import (
-	"crypto/tls"
 	"errors"
 	"flag"
 	"fmt"
@@ -27,8 +26,6 @@ func Run() {
 	var cfg config
 
 	flag.IntVar(&cfg.port, "port", 8443, "HTTP port")
-	flag.StringVar(&cfg.certfile, "certfile", "server.crt", "Cert File")
-	flag.StringVar(&cfg.keyfile, "keyfile", "server.key", "Key File")
 	flag.StringVar(&cfg.version, "version", "v0.1.0", "Version")
 	flag.Parse()
 
@@ -39,21 +36,11 @@ func Run() {
 		logger: logger,
 	}
 
-	cert, err := tls.LoadX509KeyPair(cfg.certfile, cfg.keyfile)
-	if err != nil {
-		logger.Error("TLS enabled: invalid certfile or keyfile", "error", err)
-		os.Exit(1)
-	}
-
 	// addr expects a string in ":8080" format
 	// TODO: need to refine timeouts
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", cfg.port),
-		Handler: app.routes(),
-		TLSConfig: &tls.Config{
-			MinVersion:   tls.VersionTLS13,
-			Certificates: []tls.Certificate{cert},
-		},
+		Addr:         fmt.Sprintf(":%d", cfg.port),
+		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
@@ -62,7 +49,7 @@ func Run() {
 
 	logger.Info("Starting server on", "addr", srv.Addr, "version", cfg.version)
 
-	if err := srv.ListenAndServeTLS("", ""); err != nil {
+	if err := srv.ListenAndServe(); err != nil {
 		if errors.Is(err, http.ErrServerClosed) {
 			logger.Info("server stopped", "reason", "shutdown")
 			return

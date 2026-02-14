@@ -22,10 +22,9 @@ func (app *application) clientError(w http.ResponseWriter, status int) {
 	http.Error(w, http.StatusText(status), status)
 }
 
-// func (app *application) notFound(w http.ResponseWriter) {
-// 	app.clientError(w, http.StatusNotFound)
-// }
-
+//	func (app *application) notFound(w http.ResponseWriter) {
+//		app.clientError(w, http.StatusNotFound)
+//	}
 func (app *application) requireJSON(r *http.Request, w http.ResponseWriter) bool {
 	if r.Header.Get("Content-Type") != "application/json" && !strings.HasPrefix(r.Header.Get("Content-Type"), "application/json;") {
 		http.Error(w, "Content-Type must be application/json", http.StatusUnsupportedMediaType)
