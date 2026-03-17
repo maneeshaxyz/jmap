@@ -4,5 +4,5 @@ TODO.md
 bin/jmapd
 .idea
 coverage.out
-docs/*
-!docs/README.md
+#docs/*
+#!docs/README.md

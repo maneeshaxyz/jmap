@@ -13,13 +13,13 @@ git clone github.com/maneeshaxyz/jmap
 - from source:
 
 ```
-make #make build for build only
+make
 ```
 
 - as dockerfile
 
 ```
-make drun # make dbuild for docker build only
+make drun
 ```
 
 ## Project Structure
