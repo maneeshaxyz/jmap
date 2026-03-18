@@ -1,6 +1,7 @@
 package jmap
 
 type JmapResponse struct {
-	MethodResponses []Invocation `json:"methodResponses"`
-	SessionState    string       `json:"sessionState"`
+	MethodResponses []Invocation      `json:"methodResponses"`
+	CreatedIDs      map[string]string `json:"createdIds,omitempty"`
+	SessionState    string            `json:"sessionState"`
 }

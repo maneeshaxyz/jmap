@@ -11,10 +11,8 @@ import (
 )
 
 type config struct {
-	port     int
-	certfile string
-	keyfile  string
-	version  string
+	port    int
+	version string
 }
 
 type application struct {
