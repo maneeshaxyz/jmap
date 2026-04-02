@@ -1,0 +1,3 @@
+[submodule "jmap-test-suite"]
+	path = jmap-test-suite
+	url = https://github.com/jmapio/jmap-test-suite.git

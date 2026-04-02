@@ -22,10 +22,10 @@ const (
 )
 
 const (
-	APIBaseURL         = "https://api.example.com/jmap/"
-	DownloadURLTmpl    = APIBaseURL + "download/{accountId}/{blobId}/{type}/{name}"
-	UploadURLTmpl      = APIBaseURL + "upload/{accountId}"
-	EventSourceURLTmpl = APIBaseURL + "events?types={types}&closeafter={closeafter}&ping={ping}"
+	APIBaseURL         = "http://localhost:8443/jmap/request"
+	DownloadURLTmpl    = "http://localhost:8443/jmap/download/{accountId}/{blobId}/{type}/{name}"
+	UploadURLTmpl      = "http://localhost:8443/jmap/upload/{accountId}"
+	EventSourceURLTmpl = "http://localhost:8443/jmap/events?types={types}&closeafter={closeafter}&ping={ping}"
 )
 
 var DefaultAccounts = Accounts{

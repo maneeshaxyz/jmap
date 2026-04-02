@@ -3,13 +3,13 @@
 
 JMAP (JSON Meta Application Protocol) is a modern, efficient protocol for synchronizing email, calendars, and contacts over HTTP using JSON. It handles large datasets efficiently, supports push updates, and provides a consistent, easy-to-use interface across platforms.
 
-### Setup
+### Build & run (source or dockerfile)
+
 - Clone the repository using 
 ```
 git clone github.com/maneeshaxyz/jmap
 ```
 
-### Build & run (source or dockerfile)
 - from source:
 
 ```
