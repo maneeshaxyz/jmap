@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"strconv"
 
-	jmap "github.com/maneeshaxyz/jmap/internal/core"
+	jmap "github.com/maneeshaxyz/openjmap/internal/core"
 )
 
 func (app *application) healthCheck(w http.ResponseWriter, r *http.Request) {

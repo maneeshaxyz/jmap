@@ -6,3 +6,4 @@ bin/jmapd
 coverage.out
 #docs/*
 #!docs/README.md
+/jmap-test-suite
